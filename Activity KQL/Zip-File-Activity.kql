@@ -1,4 +1,0 @@
-DeviceFileEvents
-| where DeviceName == "ty-win-vm"
-| where FileName endswith ".zip"
-| order by Timestamp desc

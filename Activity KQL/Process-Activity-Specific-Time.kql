@@ -1,7 +1,0 @@
-let VMName = "ty-win-vm";
-let specificTime = datetime(2026-06-16T15:14:02.6031458Z);
-DeviceProcessEvents
-| where Timestamp between ((specificTime - 2m) .. (specificTime + 2m))
-| where DeviceName == VMName
-| order by Timestamp desc
-| project Timestamp, DeviceName, ActionType, FileName, ProcessCommandLine
