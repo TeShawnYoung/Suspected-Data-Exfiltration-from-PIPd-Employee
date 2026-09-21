@@ -32,14 +32,12 @@ DeviceFileEvents
 | order by Timestamp desc
 ```
 
-Key events isolated from this export (`query_1.csv`):
-
 | Timestamp | ActionType | FileName | FolderPath |
 |---|---|---|---|
 | Jun 16, 2026 11:14:00 AM | FileCreated | employee-data-20260616151350.zip | `C:\ProgramData\employee-data-20260616151350.zip` |
 | Jun 16, 2026 11:14:02 AM | FileRenamed | employee-data-20260616151350.zip | `C:\ProgramData\backup\employee-data-20260616151350.zip` |
 
-<img width="2025" height="490" alt="image" src="https://github.com/user-attachments/assets/f994bbd9-c5b6-4f6a-924c-87db07e148f4" />
+<img width="2339" height="508" alt="image" src="https://github.com/user-attachments/assets/7d626d81-f0f1-43cb-8aac-53d86253f980" />
 
 ---
 
@@ -58,8 +56,6 @@ DeviceProcessEvents
 | order by Timestamp desc
 | project Timestamp, DeviceName, ActionType, FileName, ProcessCommandLine
 ```
-
-Key events isolated from this export (`query_2.csv`):
 
 | Timestamp | FileName | ProcessCommandLine |
 |---|---|---|
@@ -92,8 +88,6 @@ DeviceNetworkEvents
 | project Timestamp, ActionType, RemoteIP, RemoteUrl, RemotePort,
           InitiatingProcessFileName, InitiatingProcessCommandLine, InitiatingProcessAccountName
 ```
-
-Key events isolated from the corrected export:
 
 | Timestamp | RemoteUrl | RemoteIP:Port | Initiating Process |
 |---|---|---|---|
