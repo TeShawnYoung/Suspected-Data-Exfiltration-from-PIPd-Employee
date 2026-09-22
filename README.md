@@ -125,19 +125,20 @@ The sequence reflects a complete collection-and-exfiltration chain: script execu
 
 ## Summary
 
-`exfiltratedata.ps1`, launched via `cmd.exe` from `C:\programdata\`, compressed employee data using `7z.exe`, staged the resulting archive in a local "backup" folder, and — in the same second — transmitted data over HTTPS to an Azure Blob Storage endpoint (`sacyberrangedanger.blob.core.windows.net`). An earlier connection from the same process to a second storage account (`sacyberrange00.blob.core.windows.net`) at script start may represent an initial test connection or a separate upload and warrants further review. The evidence supports that data was both staged and exfiltrated from the host.
+`exfiltratedata.ps1`, launched via `cmd.exe` from `C:\programdata\`, compressed employee data using `7z.exe`, staged the resulting archive in a local "backup" folder, and — in the same second — transmitted data over HTTPS to an Azure Blob Storage endpoint (`sacyberrangedanger.blob.core.windows.net`). An earlier connection from the same process to a second storage account (`sacyberrange00.blob.core.windows.net`) at script start may represent an initial test connection or a separate upload and warrants further review. The evidence supports that data was both staged and exfiltrated from the host using a valid exfiltration technique. The security team has visibility into and access to both destination storage accounts, so the data did not reach an external or unauthorized third party — but the exfiltration technique itself executed successfully and represents a real detection and access-control gap that needs to be addressed.
 
 ---
 
 ## Response Taken
 
-The system was immediately isolated upon discovering the archiving activity. Findings were relayed to the employee's manager. Recommended next steps:
+The system was immediately isolated upon discovering the archiving activity. Findings were relayed to the employee's manager. Because the destination storage accounts are within the company's own visibility and control, the exfiltrated data did not reach an external party — but this does not lessen the severity of an employee deliberately staging and transmitting company data without authorization. Recommended next steps:
 
-- Escalate to HR/Legal given confirmed data exfiltration by an employee on a PIP.
-- Identify the owner/access scope of the `sacyberrangedanger.blob.core.windows.net` and `sacyberrange00.blob.core.windows.net` storage accounts, and determine whether they are attacker-controlled, personal, or otherwise unauthorized.
+- Escalate to HR/Legal given confirmed unauthorized data exfiltration by an employee on a PIP.
+- Confirm who created and controls the `sacyberrangedanger.blob.core.windows.net` and `sacyberrange00.blob.core.windows.net` storage accounts, and whether John had any legitimate business reason to access them.
 - Recover and statically analyze `C:\programdata\exfiltratedata.ps1` (if still present) to confirm exactly what was uploaded and via what method (e.g. SAS token, `Invoke-WebRequest -Method Put`, AzCopy).
 - Identify the source and full contents of `employee-data-temp20260616151350.csv` to scope what data was disclosed.
 - Review `DeviceLogonEvents` and authentication logs for the `ty` account around 11:13–11:15 AM to confirm whether this was interactive (John at the keyboard) or remote/scripted activity.
 - Preserve all EDR data and the isolated VM disk for forensic/legal chain of custody.
+- Revoke or rotate any credentials/SAS tokens used to reach the destination storage accounts to prevent further unauthorized access.
 
 The team is standing by for further instructions from management.
